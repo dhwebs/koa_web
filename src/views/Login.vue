@@ -1,0 +1,143 @@
+<template>
+  <div class="login" type="border-card" v-loading="loading">
+    <!-- company-img -->
+    <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'"></div>
+    <div class="right-side">
+      <div class="logo-img">
+        <!-- logo -->
+        <img src="../assets/image/u986.png" alt="logo"/>
+      </div>
+      <el-form :model="form" status-icon :rules="rules" ref="form" label label-width="100px" class="demo-ruleForm">
+        <p class="title">账号登录</p>
+        <ul class="account">
+          <li class="form-item">
+            <i class="fa fa-user" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
+            <span class="user-icon"></span>
+            <input placeholder="用户帐号" v-model="form.username" @keydown.enter="changeTab" />
+          </li>
+          <li class="form-item">
+            <i class="fa fa-lock" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
+            <span class="user-icon"></span>
+            <input id="password" type="password" placeholder="登录密码" v-model="form.password" auto-complete="off" @keydown.enter="onLogin" />
+          </li>
+          <li class="remember">
+              <el-checkbox v-model="rememberPassword" >记住密码</el-checkbox>
+          </li>
+          <li>
+            <el-button type="primary" @click="onLogin" class="entry">登录</el-button>
+          </li>
+        </ul>
+      </el-form>
+      <div class="copyright">
+        <span><a target="_blank" href="http://www.tsinghong.com/">@2015-2020 青虹云</a></span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "Login",
+    data() {
+      return {
+        visiable: false,
+        rememberPassword: false,
+        repwd: false,
+        cookiepwd: '',
+        loading: false,
+        form: {},
+        rules:[]
+      };
+    },
+    mounted() {
+    },
+    methods: {
+      changeTab(){
+      },
+      loadAccountInfo() {
+      },
+      show() {
+        this.visiable = true;
+      },
+      hide() {
+        this.visiable = false;
+      },
+      onLogin() {
+        this.$axios({
+          method:'post',
+          url:'/api/signin',
+          data:{
+            name:this.form.username,
+            password:this.form.password
+          }
+        }).then(res=>{
+          console.log(res)
+        }).catch(err=>{
+          console.log(err)
+        })
+        // this.$router.push('/main')
+      },
+      login() {
+        
+      },
+
+      onBack() {
+      }
+    }
+  }
+</script>
+<style scoped>
+  .login {width: 1000px;height: 529px;position: absolute;
+    top: 50%;left: 50%;background: #fff;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    -webkit-box-shadow: 0 0 18px 3px #cfcfcf;
+    box-shadow: 0 0 18px 3px #cfcfcf;}
+  .left-side{width: 703px;height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background:#0f88cd;
+    background-position: 50%}
+  .right-side{width: 297px;height: 100%;
+    position: absolute;top: 0;right: 0;background: #fff;}
+  .logo-img{width: 145px;margin: 65px auto 0;}
+  .logo-img img{display: block;width: 100%;}
+  .copyright{width: 100%;position: absolute;left: 0;
+    bottom: 10px;line-height: 1.5;text-align: center;}
+  .copyright span a{font-size: 12px;color: #a9a9a9;}
+  .title{text-align: center;font-size: 18px;color: #7e7c7c;margin: 30px 0px;}
+  .entry{display: block;width: 100%;height: 37px;
+    color: #fff;background: #0f88cd;
+    font-size: 16px;border-radius: 37px;
+    border: none;outline: none;
+    margin-top: 34px;cursor: pointer;
+    -webkit-box-shadow: 0 0 4px #0f88cd;
+    box-shadow: 0 0 4px #0f88cd;}
+  .account{padding: 0px;margin: 0 50px;}
+  .account li{list-style-type: none;margin-bottom: 15px;}
+  .remember{padding-top: 5px;}
+  .remember
+  .register{
+    display: block;
+    text-align: center;
+  }
+  .el-checkbox{color: #a9a9a9 !important;}
+  .form-item {padding-bottom: 5px;display: flex;
+    line-height: 45px;border-bottom: 0.5px solid #e3e5e8;box-sizing: border-box;}
+  .form-item:hover{border-bottom: 0.5px solid #999;}
+  .form-item input{border: 1px solid #fff;outline:none;}
+  .user-icon{
+    width: 2em;
+    height: 2em;
+    fill: #9a0506;
+    margin-right: 2px;
+    }
+  .el-checkbox__original{z-index: 0 !important;}
+  input::-webkit-input-placeholder{color: #a9a9a9;}
+  .copyright2{
+    padding-top: 30px;
+    font-size: 12px;
+    color: #a9a9a9;
+    text-align: center;
+  }
+</style>
