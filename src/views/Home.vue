@@ -3,12 +3,12 @@
     <el-header class="header" style="padding-left:0;">
       <el-row>
         <el-col :span="4">
-          <h1 style="color:#fff;text-align:center;width:160px;line-height:60px;padding:0">喜洋物流</h1>
+          <h1 style="color:#fff;text-align:center;width:160px;line-height:60px;padding:0">大海的后台</h1>
         </el-col>
         <!-- <el-col :span="6">
           <img id="u986_img" style="display:block;height:59px" src="../assets/image/u52.png"/>
         </el-col> -->
-        <el-col :span="2" :offset="12">
+        <!-- <el-col :span="2" :offset="12">
           <p style="color:#fff;text-align:center;width:160px;line-height:60px;padding:0;cursor:pointer" @click='logout'><i class="el-icon-user-solid"></i> 注销</p>
         </el-col>
         <el-col :span="3" >
@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="3">
           <p style="color:#fff;text-align:center;width:160px;line-height:60px;padding:0"><i class="el-icon-message"></i> service@HYL.com</p>
-        </el-col>
+        </el-col> -->
       </el-row>
     </el-header>
     <el-container style="height:calc(100% - 80px)">
@@ -64,6 +64,19 @@
                   </template>
                 </el-menu-item>
               </el-submenu>
+            <!-- </el-menu-item-group> -->
+          </el-submenu><el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-s-unfold"></i>
+              <span>文章管理</span>
+            </template>
+            <!-- <el-menu-item-group> -->
+            <el-menu-item index="/article">
+              <template slot="title">
+                <i class="el-icon-s-unfold"></i>
+                <span>文章列表</span>
+              </template>
+            </el-menu-item>
             <!-- </el-menu-item-group> -->
           </el-submenu>
         </el-menu>

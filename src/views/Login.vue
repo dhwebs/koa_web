@@ -1,8 +1,8 @@
 <template>
   <div class="login" type="border-card" v-loading="loading">
     <!-- company-img -->
-    <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'"></div>
-    <div class="right-side">
+    <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'" v-show="!registerShow"></div>
+    <div class="right-side" v-show="!registerShow">
       <div class="logo-img">
         <!-- logo -->
         <img src="../assets/image/u986.png" alt="logo"/>
@@ -24,15 +24,38 @@
               <el-checkbox v-model="rememberPassword" >记住密码</el-checkbox>
           </li>
           <li>
-            <el-button type="primary" @click="onLogin" class="entry">登录</el-button>
+            <el-button type="primary" @click="onLogin" class="entry" :disabled='disabled'>登录</el-button>
+            <!-- <el-button type="primary" @click="login" class="entry">注册</el-button> -->
           </li>
         </ul>
+        <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer" @click="registerShow=true">没有账号？ 点击注册</p>
       </el-form>
       <div class="copyright">
-        <span><a target="_blank" href="http://www.tsinghong.com/">@2015-2020 青虹云</a></span>
+        <span><a target="_blank" href="http://www.tsinghong.com/">@2020 大海</a></span>
       </div>
     </div>
-  </div>
+    
+      <el-form label-width="100px" size="small" v-show="registerShow" style="padding:50px 25%">
+        <p class="title">注册账号</p>
+        <el-form-item label="公司名称">
+          <el-input v-model="subData.company" placeholder="公司名称"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input v-model="subData.name" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号码">
+          <el-input v-model="subData.phone" placeholder="手机号码"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="subData.password" type="password" placeholder="密码"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码">
+          <el-input v-model="subData.password2" type="password" placeholder="确认密码"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="onRegister" class="entry" style="width:150px;margin:0 auto" :disabled='disabled'>注册</el-button>
+        <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer;margin-top:20px" @click="registerShow=false">已有账号？ 点击登录</p>
+      </el-form>
+  </div>  
 </template>
 
 <script>
@@ -40,13 +63,22 @@
     name: "Login",
     data() {
       return {
+        disabled:false,
         visiable: false,
         rememberPassword: false,
         repwd: false,
         cookiepwd: '',
         loading: false,
         form: {},
-        rules:[]
+        rules:[],
+        registerShow:false,
+        subData:{
+          company:'',
+          name:'',
+          phone:'',
+          password:'',
+          password2:'',
+        }
       };
     },
     mounted() {
@@ -63,21 +95,40 @@
         this.visiable = false;
       },
       onLogin() {
+        this.disabled=true
+        setTimeout(()=>{
+          this.disabled=false
+        },2000)
         this.$axios({
           method:'post',
-          url:'/api/signin',
+          url:'/api/login',
           data:{
             name:this.form.username,
             password:this.form.password
           }
         }).then(res=>{
           console.log(res)
+          this.$message.success(res.data.remark)
+          this.$router.push('/main')
+        }).catch(err=>{
+          this.$message.warning(err.data.remark)
+          console.log(err)
+        })
+      },
+      onRegister() {
+        this.disabled=true
+        setTimeout(()=>{
+          this.disabled=false
+        },2000)
+        this.$axios({
+          method:'post',
+          url:'/api/register',
+          data:this.subData
+        }).then(res=>{
+          console.log(res)
         }).catch(err=>{
           console.log(err)
         })
-        // this.$router.push('/main')
-      },
-      login() {
         
       },
 

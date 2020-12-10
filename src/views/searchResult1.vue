@@ -3,9 +3,9 @@
     <div class="top">
       <h3>报价查询</h3>
       <el-button-group>
-        <el-button size="mini" type="primary" icon="el-icon-edit">报价历史</el-button>
-        <el-button size="mini" type="primary" icon="el-icon-edit">制作报价</el-button>
-        <el-button size="mini" type="warning" icon="el-icon-download">导出</el-button>
+        <el-button size="small" type="primary" icon="el-icon-edit">报价历史</el-button>
+        <el-button size="small" type="primary" icon="el-icon-edit">制作报价</el-button>
+        <el-button size="small" type="warning" icon="el-icon-download">导出</el-button>
       </el-button-group>
     </div>
     <el-form size="small" inline label-width="auto" style="margin-top:20px;background:#fbfdff;padding:15px;box-sizing:border-box">
