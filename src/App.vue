@@ -4,6 +4,15 @@
   </div>
 </template>
 <script>
+export default {
+  created () {//大刷保持状态
+    this.$store.replaceState(Object.assign(this.$store.state,JSON.parse(sessionStorage.getItem("beforeunload"))));
+    window.addEventListener('beforeunload', ()=>{
+      let state = JSON.stringify(this.$store.state)
+        sessionStorage.setItem("beforeunload",state);
+    });
+  },
+}
   // import "./style/style.css"
 </script>
 <style lang="scss">

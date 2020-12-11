@@ -39,7 +39,7 @@
       </el-form-item>
     </el-form>
     
-    <el-table :data="tableData" border style="margin-top:20px;box-shadow:0 0 2px 0 #333;width: 100%;" v-loading="loading">
+    <el-table :data="tableData" border :cell-style='rowStyle' style="margin-top:20px;box-shadow:0 0 2px 0 #333;width: 100%;" v-loading="loading">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="subtitle" label="副标题"></el-table-column>
@@ -121,6 +121,11 @@ export default {
       this.params.cursor=val
       this.getArtical()
     },
+    rowStyle({row}){
+      if(row.state==1){
+        row.state='正常'
+      }
+    },
     reset() {
       this.params.title=''
     },
@@ -129,14 +134,20 @@ export default {
       this.title='添加文章'
     },
     saveArticle(){
-      this.subData.author='大海'
-      this.subData.authorId='3'
+      this.subData.author=this.$store.state.user.name
+      this.subData.authorId=this.$store.state.user.id
       this.$axios({
         method:'post',
         url:'/api/article_add',
         data:this.subData
       }).then(res=>{
-        this.$message.success('添加成功')
+        if(res.data.state==201){
+          this.dialogArticle=false
+          this.$message.success('添加成功')
+          this.handleCurrentChange(1)
+        }else{
+          this.$message.warning(res.data.remark)
+        }
         console.log(res)
       }).catch(err=>{
         console.log(err)
@@ -153,7 +164,13 @@ export default {
         url:'/api/article_update',
         data:this.subData
       }).then(res=>{
-        this.$message.success('修改成功')
+        if(res.data.state==200){
+          this.dialogArticle=false
+          this.$message.success('修改成功')
+          this.handleCurrentChange(1)
+        }else{
+          this.$message.warning(res.data.remark)
+        }
         console.log(res)
       }).catch(err=>{
         console.log(err)

@@ -17,6 +17,11 @@ const routes = [
     component: Home,
     children:[
       {
+        path: '/main',
+        name: 'mainPage',
+        component: () => import('../views/main.vue')
+      },
+      {
         path: '/searchResult1',
         name: 'searchResult1',
         component: () => import('../views/searchResult1.vue')
@@ -45,6 +50,16 @@ const routes = [
         path: '/article',
         name: 'article',
         component: () => import('../views/article.vue')
+      },
+      {
+        path: '/pageStyle',
+        name: 'pageStyle',
+        component: () => import('../views/pageStyle.vue')
+      },
+      {
+        path: '/authority',
+        name: 'authority',
+        component: () => import('../views/authority.vue')
       }
     ]
   },

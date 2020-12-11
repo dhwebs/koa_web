@@ -78,7 +78,8 @@
           phone:'',
           password:'',
           password2:'',
-        }
+        },
+        authority:[]
       };
     },
     mounted() {
@@ -108,11 +109,33 @@
           }
         }).then(res=>{
           console.log(res)
-          this.$message.success(res.data.remark)
-          this.$router.push('/main')
+          if(res.data.state==200){
+            this.$message.success(res.data.remark)
+            this.$store.commit('SETUSER',res.data.data)
+            console.log(this.$store.state.user)
+            this.authority = res.data.author.filter(item=>{
+              return !item.belongId
+            })
+            this.recursion2(this.authority,res.data.author)
+            this.$store.commit('SETAUTHORITY',this.authority)
+            this.$router.push('/main')
+          }else{
+            this.$message.warning(res.data.remark)
+          }
         }).catch(err=>{
           this.$message.warning(err.data.remark)
           console.log(err)
+        })
+      },
+      
+      recursion2(arr,list){
+        arr.forEach(item=>{
+          item.children=list.filter(child=>{
+            return child.belongId === item.id
+          })
+          if(item.children && item.children.length){
+            this.recursion2(item.children,list)
+          }
         })
       },
       onRegister() {
