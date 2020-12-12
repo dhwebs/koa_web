@@ -112,6 +112,7 @@
           if(res.data.state==200){
             this.$message.success(res.data.remark)
             this.$store.commit('SETUSER',res.data.data)
+            this.$store.commit('SETINITIALAUTHORITY',res.data.author)
             console.log(this.$store.state.user)
             this.authority = res.data.author.filter(item=>{
               return !item.belongId
@@ -120,6 +121,7 @@
             this.$store.commit('SETAUTHORITY',this.authority)
             this.$router.push('/main')
           }else{
+            console.log('登录失败')
             this.$message.warning(res.data.remark)
           }
         }).catch(err=>{

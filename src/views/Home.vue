@@ -24,115 +24,7 @@
     <el-container style="height:calc(100% - 80px)">
       <el-aside style="width:210px;height:100%">
         <el-menu :default-active="defaultActive" unique-opened class="el-menu-vertical-demo" style="width:210px;height:100%" @select='handleSelect' @open="handleOpen" @close="handleClose">
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-s-unfold"></i>
-              <span>运价平台</span>
-            </template>
-              <el-menu-item index="/searchResult1">
-                <template slot="title">
-                  <i class="el-icon-s-unfold"></i>
-                  <span>报价查询</span>
-                </template>
-              </el-menu-item>
-              <el-submenu index="1-3">
-                <template slot="title">
-                  <i class="el-icon-s-unfold"></i>
-                  <span>制作报价</span>
-                </template>
-                <el-menu-item index="/price">
-                  <template slot="title">
-                    <i class="el-icon-s-unfold"></i>
-                    <span>报价</span>
-                  </template>
-                </el-menu-item>
-                <el-menu-item index="/priceInfo">
-                  <template slot="title">
-                    <i class="el-icon-s-unfold"></i>
-                    <span>报价详情</span>
-                  </template>
-                </el-menu-item>
-                <el-menu-item index="/approval">
-                  <template slot="title">
-                    <i class="el-icon-s-unfold"></i>
-                    <span>报价审批页面</span>
-                  </template>
-                </el-menu-item>
-                <el-menu-item index="/priceList">
-                  <template slot="title">
-                    <i class="el-icon-s-unfold"></i>
-                    <span>报价单</span>
-                  </template>
-                </el-menu-item>
-              </el-submenu>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-s-unfold"></i>
-              <span>文章管理</span>
-            </template>
-            <el-menu-item index="/article">
-              <template slot="title">
-                <i class="el-icon-s-unfold"></i>
-                <span>文章列表</span>
-              </template>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-s-unfold"></i>
-              <span>系统设置</span>
-            </template>
-            <el-menu-item index="/pageStyle">
-              <template slot="title">
-                <i class="el-icon-s-unfold"></i>
-                <span>页面样式</span>
-              </template>
-            </el-menu-item>
-            <el-menu-item index="/authority">
-              <template slot="title">
-                <i class="el-icon-s-unfold"></i>
-                <span>权限管理</span>
-              </template>
-            </el-menu-item>
-          </el-submenu>
-          
-          <el-submenu v-for="(item,i) in authority" :key='i' :index="i">
-            <template slot="title" v-if="item.type=='title'">
-              <i class="el-icon-s-unfold"></i>
-              <span>{{item.name}}</span>
-            </template>
-            <el-menu-item :index="item.path" v-if="item.type=='route'">
-              <template slot="title">
-                <i class="el-icon-s-unfold"></i>
-                <span>{{item.name}}</span>
-              </template>
-            </el-menu-item>
-            <el-submenu v-for="(item2,k) in item.children" :key='k' :index="i+k">
-              <template slot="title" v-if="item2.type=='title'">
-                <i class="el-icon-s-unfold"></i>
-                <span>{{item2.name}}</span>
-              </template>
-              <el-menu-item :index="item2.path" v-if="item2.type=='route'">
-                <template slot="title">
-                  <i class="el-icon-s-unfold"></i>
-                  <span>{{item2.name}}</span>
-                </template>
-              </el-menu-item>
-              <el-submenu v-for="(item3,j) in item2.children" :key='j' :index="i+k+j">
-                <template slot="title" v-if="item3.type=='title'">
-                  <i class="el-icon-s-unfold"></i>
-                  <span>{{item3.name}}</span>
-                </template>
-                <el-menu-item :index="item3.path" v-if="item3.type=='route'">
-                  <template slot="title">
-                    <i class="el-icon-s-unfold"></i>
-                    <span>{{item3.name}}</span>
-                  </template>
-                </el-menu-item>
-              </el-submenu>
-            </el-submenu>
-          </el-submenu>
+          <dh-submenu :list='authority' index='0'></dh-submenu>
         </el-menu>
       </el-aside>
       <el-main style="padding:0;height:100%">
@@ -157,9 +49,13 @@
 </template>
 
 <script>
+  import dhSubmenu from '../components/dh-submenu'
   import {mapState} from 'vuex'
   export default {
     name: 'Home',
+    components:{
+      dhSubmenu
+    },
     data(){
       return{
         defaultActive:'1',
@@ -179,7 +75,7 @@
         this.$router.replace('/main')
       }
     },
-    computed:{...mapState(['authority'])},
+    computed:{...mapState(['authority','initialAuthority'])},
 
     methods: {
       handleOpen(key, keyPath) {
@@ -198,9 +94,9 @@
           let item=this.initialAuthority.find(item=>{
             return item.path==key
           })
-          item.title=item.name
-          item.name=item.path
-          this.editableTabs.push(item)
+          console.log(item,this.initialAuthority)
+          let obj={title:item.name,name:item.path}
+          this.editableTabs.push(obj)
         }
         this.$router.push(key)
       },
