@@ -22,7 +22,7 @@
       </el-row>
     </el-header>
     <el-container style="height:calc(100% - 80px)">
-      <el-aside style="width:210px;height:100%">
+      <el-aside style="width:210px;height:100%;overflow-x:hidden">
         <el-menu :default-active="defaultActive" unique-opened class="el-menu-vertical-demo" style="width:210px;height:100%" @select='handleSelect' @open="handleOpen" @close="handleClose">
           <dh-submenu :list='authority' index='0'></dh-submenu>
         </el-menu>

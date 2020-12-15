@@ -1,7 +1,7 @@
 <template>
 <div>
   <div v-for="(item,i) in list" :key='i'>
-    <el-submenu :index="index+'-'+i" v-if="item.type=='title'">
+    <el-submenu :index="index+'-'+i" v-if="item.type=='title' && item.children && item.children.length">
       <template slot="title">
         <i :class="item.icon?item.icon:'el-icon-s-unfold'"></i>
         <span>{{item.name}}</span>

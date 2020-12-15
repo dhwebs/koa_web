@@ -1,15 +1,28 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
+import HomePage from '../views/homePages/index.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
+    name: 'HomePage',
+    redirect:'/index',
+    component: HomePage,
+    children:[
+      {
+        path: '/index',
+        name: 'index',
+        component: () => import('../views/homePages/Home.vue')
+      },
+    ]
+  },
+  {
+    path: '/login',
     name: 'Login',
-    component: Login,
+    component: () => import('../views/Login.vue')
   },
   {
     path: '/main',
@@ -60,6 +73,11 @@ const routes = [
         path: '/authority',
         name: 'authority',
         component: () => import('../views/authority.vue')
+      },
+      {
+        path: '/setIndex',
+        name: 'setIndex',
+        component: () => import('../views/setIndex.vue')
       }
     ]
   },

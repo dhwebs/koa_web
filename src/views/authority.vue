@@ -139,7 +139,7 @@ export default {
         url:'/api/authority_add',
         data:this.subData
       }).then(res=>{
-        if(res.data.state==201){
+        if(res.data.code==201){
           this.dialogArticle=false
           this.$message.success('添加成功')
           this.getAuthority()
@@ -171,7 +171,7 @@ export default {
         url:'/api/authority_update',
         data:this.subData
       }).then(res=>{
-        if(res.data.state==200){
+        if(res.data.code==200){
           this.dialogArticle=false
           this.$message.success('修改成功')
           this.getAuthority()
@@ -194,7 +194,7 @@ export default {
           url:'/api/authority_delete',
           data:{id:row.id}
         }).then(res=>{
-          if(res.data.state==200){
+          if(res.data.code==200){
             this.dialogArticle=false
             this.$message.success('删除成功')
             this.getAuthority()

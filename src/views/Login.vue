@@ -1,11 +1,12 @@
 <template>
   <div class="login" type="border-card" v-loading="loading">
     <!-- company-img -->
-    <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'" v-show="!registerShow"></div>
+    <!-- <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'" v-show="!registerShow"></div> -->
+    <div class="left-side" style="background-image:url('https://w.wallhaven.cc/full/72/wallhaven-72g8wo.jpg');background-size:100% 100%" v-show="!registerShow"></div>
     <div class="right-side" v-show="!registerShow">
       <div class="logo-img">
         <!-- logo -->
-        <img src="../assets/image/u986.png" alt="logo"/>
+        <!-- <img src="https://w.wallhaven.cc/full/m9/wallhaven-m9qmxy.jpg" alt="logo"/> -->
       </div>
       <el-form :model="form" status-icon :rules="rules" ref="form" label label-width="100px" class="demo-ruleForm">
         <p class="title">账号登录</p>
@@ -109,7 +110,7 @@
           }
         }).then(res=>{
           console.log(res)
-          if(res.data.state==200){
+          if(res.data.code==200){
             this.$message.success(res.data.remark)
             this.$store.commit('SETUSER',res.data.data)
             this.$store.commit('SETINITIALAUTHORITY',res.data.author)
