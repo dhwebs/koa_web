@@ -70,7 +70,9 @@
       </el-table-column>
       <el-table-column align="center" label="文章关联">
         <template slot-scope="row">
-          <el-input v-model="row.row.order" v-show="!row.row.children"></el-input>
+          <el-select v-model="row.row.order" filterable placeholder="请选择" v-show="!row.row.children" @change="selectChange($event,row.row)">
+            <el-option v-for="item in articleList" :key="item.id" :label="item.title" :value="item.id"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column align="center" label="章节宽度">
@@ -133,6 +135,7 @@ export default {
       }).then(res=>{
         Object.assign(this.subData,res.data.data)
         this.tableData=JSON.parse(res.data.data.chapter)
+        this.swiperData=JSON.parse(res.data.data.swiper)
       }).catch(err=>{
         console.log(err)
       })
@@ -164,9 +167,19 @@ export default {
         path:'',
         order:'',
         span:'',
+        artTitle:'',
+        artImg:'',
         index:row.index + '-' +row.children.length,
       }
       row.children.push(obj)
+    },
+    selectChange(val,row){
+      let item=this.articleList.find(item=>{
+        return item.id===val
+      })
+      row.artTitle=item.title
+      row.artImg=item.cover
+      console.log(val,row)
     },
     updateArticle(){
       this.subData.chapter=JSON.stringify(this.tableData)
@@ -192,11 +205,13 @@ export default {
         confirmButtonText: '确认',
         cancelButtonText: '取消'
       }).then(() => {
-        console.log(this.tableData)
-        if(row.index.indexOf('-')>-1){
+        let index=row.index.toString().split('-')
+        console.log(this.tableData,index)
+        if(index.length>1){
           let index=row.index.split('-')
           this.tableData[index[0]].children.splice(index[1],1)
         }else{
+          console.log('进来了',row.index)
           this.tableData.splice(row.index,1)
         }
       }).catch(action => {

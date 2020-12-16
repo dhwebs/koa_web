@@ -21,12 +21,12 @@
         <div style="width:1170px;margin:0 auto">
           <div class="o-box1">{{section.name}}</div>
           <el-row :gutter="20">
-            <el-col :span="section.span" v-for="(item,i) in section.children" :key='i'>
+            <el-col v-for="(item,i) in section.children" :key='i' :span=item.span>
               <div class="o-box2" @click="show(item)">
-                <el-button v-if="item.icon" type="primary" :icon="item.icon" circle></el-button>
-                <!-- <img v-else :src="item.small_image?item.small_image[0].url:'@/../static/images/wuliu1.jpg'" alt=""> -->
+                <!-- <el-button v-if="item.icon" type="primary" :icon="item.icon" circle></el-button> -->
+                <img :src="item.artImg?item.artImg:'https://w.wallhaven.cc/full/1k/wallhaven-1kjrdg.jpg'" alt="">
                 <!-- <p>{{item.name}} </p> -->
-                <p>{{item}} </p>
+                <p>{{item.artTitle}} </p>
               </div>
             </el-col>
           </el-row>
@@ -59,6 +59,7 @@ export default {
         Object.assign(this.website,res.data.data)
         this.bannerList=JSON.parse(res.data.data.swiper)
         this.sectionList=JSON.parse(res.data.data.chapter)
+        console.log('this.sectionList',this.sectionList)
       }).catch(err=>{
         console.log(err)
       })
