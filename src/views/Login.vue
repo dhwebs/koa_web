@@ -2,11 +2,11 @@
   <div class="login" type="border-card" v-loading="loading">
     <!-- company-img -->
     <!-- <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'" v-show="!registerShow"></div> -->
-    <div class="left-side" style="background-image:url('https://w.wallhaven.cc/full/72/wallhaven-72g8wo.jpg');background-size:100% 100%" v-show="!registerShow"></div>
+    <div class="left-side" style="background-image:url('https://w.wallhaven.cc/full/8o/wallhaven-8o7q82.jpg');background-size:100% 100%" v-show="!registerShow"></div>
     <div class="right-side" v-show="!registerShow">
       <div class="logo-img">
         <!-- logo -->
-        <!-- <img src="https://w.wallhaven.cc/full/m9/wallhaven-m9qmxy.jpg" alt="logo"/> -->
+        <img src="../assets/image/u986.png" alt="logo"/>
       </div>
       <el-form :model="form" status-icon :rules="rules" ref="form" label label-width="100px" class="demo-ruleForm">
         <p class="title">账号登录</p>
