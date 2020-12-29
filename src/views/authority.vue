@@ -68,12 +68,8 @@
 </template>
 
 <script>
-import dhIcon from '../components/dh-icon'
 export default {
   name:'authority',
-  components:{
-    dhIcon
-  },
   data(){
     return{
       tableData:[],
@@ -205,7 +201,8 @@ export default {
         }).catch(err=>{
           console.log(err)
         })
-      }).catch(action => {
+      }).catch(err => {
+        console.log(err)
       });
     }
   }

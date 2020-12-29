@@ -1,24 +1,11 @@
 # web
 
-## Project setup
+## install
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+npm install --save dh-ui
 ```
 
-### Compiles and minifies for production
+### main.js import
 ```
-npm run build
+import 'dh-ui'
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

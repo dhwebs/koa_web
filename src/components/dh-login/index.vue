@@ -2,11 +2,13 @@
   <div class="login" type="border-card" v-loading="loading">
     <!-- company-img -->
     <!-- <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'" v-show="!registerShow"></div> -->
-    <div class="left-side" style="background-image:url('https://w.wallhaven.cc/full/8o/wallhaven-8o7q82.jpg');background-size:100% 100%" v-show="!registerShow"></div>
+    <div class="left-side" v-show="!registerShow">
+      <el-image style="width:100%;height:100%" :src="bigImg?bigImg:'https://w.wallhaven.cc/full/8o/wallhaven-8o7q82.jpg'"></el-image>
+    </div>
     <div class="right-side" v-show="!registerShow">
       <div class="logo-img">
         <!-- logo -->
-        <img src="../assets/image/u986.png" alt="logo"/>
+        <el-image style="width:100%;height:100%" :src="subImg?subImg:'https://w.wallhaven.cc/full/8o/wallhaven-8o7q82.jpg'"></el-image>
       </div>
       <el-form :model="form" status-icon :rules="rules" ref="form" label label-width="100px" class="demo-ruleForm">
         <p class="title">账号登录</p>
@@ -14,7 +16,7 @@
           <li class="form-item">
             <i class="fa fa-user" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
             <span class="user-icon"></span>
-            <input placeholder="用户帐号" v-model="form.username" @keydown.enter="changeTab" />
+            <input placeholder="用户帐号" v-model="form.username"/>
           </li>
           <li class="form-item">
             <i class="fa fa-lock" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
@@ -38,20 +40,20 @@
     
       <el-form label-width="100px" size="small" v-show="registerShow" style="padding:50px 25%">
         <p class="title">注册账号</p>
-        <el-form-item label="公司名称">
-          <el-input v-model="subData.company" placeholder="公司名称"></el-input>
+        <el-form-item label="公司名称" model='subData' ref='register'>
+          <el-input prop='company' v-model="subData.company" placeholder="公司名称" rules="[{ required: true, message: '请输入公司名称', trigger: 'change' }]"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
-          <el-input v-model="subData.name" placeholder="姓名"></el-input>
+          <el-input prop='name' v-model="subData.name" placeholder="姓名" rules="[{ required: true, message: '请输入姓名', trigger: 'change' }]"></el-input>
         </el-form-item>
         <el-form-item label="手机号码">
-          <el-input v-model="subData.phone" placeholder="手机号码"></el-input>
+          <el-input prop='phone' v-model="subData.phone" placeholder="手机号码" rules="[{ required: true, message: '请输入手机号码', trigger: 'change' }]"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="subData.password" type="password" placeholder="密码"></el-input>
+          <el-input prop='password' v-model="subData.password" type="password" placeholder="密码" rules="[{ required: true, message: '请输入密码', trigger: 'change' }]"></el-input>
         </el-form-item>
         <el-form-item label="确认密码">
-          <el-input v-model="subData.password2" type="password" placeholder="确认密码"></el-input>
+          <el-input prop='password2' v-model="subData.password2" type="password" placeholder="确认密码" rules="[{ required: true, message: '请输入确认密码', trigger: 'change' }]"></el-input>
         </el-form-item>
         <el-button type="primary" @click="onRegister" class="entry" style="width:150px;margin:0 auto" :disabled='disabled'>注册</el-button>
         <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer;margin-top:20px" @click="registerShow=false">已有账号？ 点击登录</p>
@@ -61,11 +63,11 @@
 
 <script>
   export default {
-    name: "Login",
+    name: "dhLogin",
+    props:['bigImg','subImg'],
     data() {
       return {
         disabled:false,
-        visiable: false,
         rememberPassword: false,
         repwd: false,
         cookiepwd: '',
@@ -83,83 +85,46 @@
         authority:[]
       };
     },
-    mounted() {
-    },
     methods: {
-      changeTab(){
-      },
-      loadAccountInfo() {
-      },
-      show() {
-        this.visiable = true;
-      },
-      hide() {
-        this.visiable = false;
+      submitForm(formName) {
+        return this.$refs[formName].validate((valid) => {
+          if (valid) {
+            return true
+          } else {
+            return false;
+          }
+        });
       },
       onLogin() {
+        if(!this.form.username){
+          this.$message.warning('账号不能为空')
+          return
+        }
+        if(!this.form.password){
+          this.$message.warning('密码不能为空')
+          return
+        }
         this.disabled=true
         setTimeout(()=>{
           this.disabled=false
         },2000)
-        this.$axios({
-          method:'post',
-          url:'/api/login',
-          data:{
-            name:this.form.username,
-            password:this.form.password
-          }
-        }).then(res=>{
-          console.log(res)
-          if(res.data.code==200){
-            this.$message.success(res.data.remark)
-            this.$store.commit('SETUSER',res.data.data)
-            this.$store.commit('SETINITIALAUTHORITY',res.data.author)
-            console.log(this.$store.state.user)
-            this.authority = res.data.author.filter(item=>{
-              return !item.belongId
-            })
-            this.recursion2(this.authority,res.data.author)
-            this.$store.commit('SETAUTHORITY',this.authority)
-            this.$router.push('/main')
-          }else{
-            console.log('登录失败')
-            this.$message.warning(res.data.remark)
-          }
-        }).catch(err=>{
-          this.$message.warning(err.data.remark)
-          console.log(err)
-        })
-      },
-      
-      recursion2(arr,list){
-        arr.forEach(item=>{
-          item.children=list.filter(child=>{
-            return child.belongId === item.id
-          })
-          if(item.children && item.children.length){
-            this.recursion2(item.children,list)
-          }
-        })
+        this.$emit('login',this.form)
       },
       onRegister() {
+        if(!this.submitForm()){
+          return
+        }
+        if(this.subData.password !== this.subData.password2){
+          this.$message.warning('两次密码不一致')
+          return
+        }
         this.disabled=true
         setTimeout(()=>{
           this.disabled=false
         },2000)
-        this.$axios({
-          method:'post',
-          url:'/api/register',
-          data:this.subData
-        }).then(res=>{
-          console.log(res)
-        }).catch(err=>{
-          console.log(err)
-        })
         
+        this.$emit('register',this.subData)
       },
-
-      onBack() {
-      }
     }
   }
 </script>
