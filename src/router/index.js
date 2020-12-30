@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home2.vue'
 import HomePage from '../views/homePages/index.vue'
 
 Vue.use(VueRouter)
@@ -78,6 +78,11 @@ const routes = [
         path: '/setIndex',
         name: 'setIndex',
         component: () => import('../views/setIndex.vue')
+      },
+      {
+        path: '/setForm',
+        name: 'setForm',
+        component: () => import('../views/setForm.vue')
       }
     ]
   },

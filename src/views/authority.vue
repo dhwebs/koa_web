@@ -68,8 +68,12 @@
 </template>
 
 <script>
+import dhIcon from '../components/dh-icon/index'
 export default {
   name:'authority',
+  components:{
+    dhIcon
+  },
   data(){
     return{
       tableData:[],
