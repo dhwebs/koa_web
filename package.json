@@ -1,14 +1,12 @@
 {
   "name": "dh-ui",
-  "version": "0.1.10",
+  "version": "0.1.15",
   "private": false,
   "license": "MIT",
   "author": "dahai",
   "main": "./dist/dh-ui.umd.min.js",
   "files": [
     "dist/*",
-    "src/*",
-    "public/*",
     "*.json",
     "*.js"
   ],

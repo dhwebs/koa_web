@@ -1,6 +1,6 @@
 <template>
   <el-container style="height:100%">
-    <dh-main :initialAuthority='initialAuthority' :authority='authority' @select='handleSelect' @open="handleOpen" @close="handleClose">
+    <dh-main ref='dhmain' :initialAuthority='initialAuthority' :authority='authority' @select='handleSelect' @open="handleOpen" @close="handleClose">
       <el-header class="header" style="padding-left:0;" slot="header">
         <el-row>
           <el-col :span="4">
@@ -66,6 +66,8 @@
         this.$router.push(item.name)
       },
       handleChange(key,keyPath){
+        this.$refs.dhmain.handleSelect('/home1',{name:'用户桌面2',path:'/home1'})
+        // this.$emit('add','/home1')
         if(key=='2-2'){
           sessionStorage.clear()
           this.$router.push('/')

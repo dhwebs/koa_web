@@ -21,17 +21,19 @@
           </el-tab-pane>
             <div style="height:calc(100vh - 102px);overflow:auto;padding:15px;box-sizing:border-box">
               <slot name='body'>
-                <keep-alive>
+                <keep-alive v-if="!com">
                   <router-view/>
                 </keep-alive>
+                <component v-else :is='com' @add-tabs="handleSelect"></component>
               </slot>
             </div>
         </el-tabs>
         <div v-show="!tabsShow" style="height:calc(100vh - 102px);overflow:auto;padding:15px;box-sizing:border-box">
           <slot name='body'>
-            <keep-alive>
+            <keep-alive v-if="!com">
               <router-view/>
             </keep-alive>
+            <component v-else :is='com' @add-tabs="handleSelect"></component>
           </slot>
         </div>
       </el-main>
@@ -40,6 +42,7 @@
 </template>
 
 <script>
+  //子组件调用父组件添加tabs  例：this.$emit('add-tabs','/home1',{name:'用户桌面2',path:'/home1'})
   import dhSubmenu from '../dh-submenu/index'
   export default {
     name: 'dhMain',
@@ -69,28 +72,12 @@
         defaultActive:'1',
         editableTabsValue:'/main',
         editableTabs:[{name:'/main',title:'用户桌面'}],
+        com:''
       }
     },
     created(){
       if(this.$router.path !== '/main'){
         this.$router.replace('/main')
-      }
-    },
-    watch:{
-      $route(to,from){
-        console.log(from,to)
-        let key=to.path
-        let index=this.editableTabs.findIndex(item=>{
-          return item.name===key
-        })
-        if(index==-1){
-          let item=this.initialAuthority.find(item=>{
-            return item.path === key
-          })
-          this.editableTabs.push({title:item.name,name:item.path})
-        }
-        this.editableTabsValue=key
-        this.defaultActive=key
       }
     },
     methods: {
@@ -103,6 +90,8 @@
         this.$emit('close',{key,keyPath})
       },
       handleSelect(key, keyPath) {
+        this.editableTabsValue=key
+        this.defaultActive=key
         let index=this.editableTabs.findIndex(item=>{
           return item.name===key
         })
@@ -110,9 +99,15 @@
           let item=this.initialAuthority.find(item=>{
             return item.path === key
           })
-          this.editableTabs.push({title:item.name,name:item.path})
+          if(item){
+            this.editableTabs.push({title:item.name,name:item.path})
+          }else{
+            this.editableTabs.push({title:keyPath.name,name:keyPath.path})
+          }
         }
-       this.$emit('select',{key,keyPath})
+        this.com=this.FindComponent(key)
+        console.log('路由查组件',key,this.$router.options.routes)
+        if(!this.com) this.$emit('select',{key,keyPath})
       },
       removeTab(targetName) {
         let tabs = this.editableTabs;
@@ -130,11 +125,30 @@
         console.log(tabs)
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
         if(this.editableTabsValue !== a){
-          this.$router.push(a)
+          this.defaultActive=a
+          this.editableTabsValue=a
+          this.com=this.FindComponent(a)
+          if(!this.com){
+            this.$router.push(a)
+          }
         }
       },
       tabClick(item){
-        this.$router.push(item.name)
+        this.defaultActive=item.name
+        this.com=this.FindComponent(item.name)
+        if(!this.com){
+          this.$router.push(item.name)
+        }
+      },
+      FindComponent(url){//通过路由找组件
+        for(let l1 in this.$router.options.routes) {
+          for(let l2 in this.$router.options.routes[l1].children) {
+            var item=this.$router.options.routes[l1].children[l2];
+            if(item.path==url) {
+              return item.component;
+            }
+          }
+        }
       },
     }
   }
