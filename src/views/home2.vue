@@ -23,6 +23,7 @@
         </el-row>
       </el-header>
     </dh-main>
+    <div class="cover"></div>
   </el-container>
 </template>
 
@@ -82,5 +83,17 @@
  }
  .el-tabs--border-card > .el-tabs__content{
    padding:0
+ }
+ .cover{
+   width: 100vw;
+   height: 100vh;
+   background: url('https://w.wallhaven.cc/full/8o/wallhaven-8o7q82.jpg') no-repeat;
+   background-size:cover ;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 19;/*-1 可以当背景*/
  }
 </style>

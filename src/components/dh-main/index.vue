@@ -4,8 +4,8 @@
       <slot name="header"></slot>
     </el-header>
     <el-container style="height:calc(100% - 80px)">
-      <el-aside style="width:210px;height:100%;overflow-x:hidden">
-        <el-menu :default-active="defaultActive" unique-opened class="el-menu-vertical-demo" style="width:210px;height:100%" @select='handleSelect' @open="handleOpen" @close="handleClose">
+      <el-aside style="height:100%;overflow-x:hidden" :style="{width:!isCollapse?'210px':'48px'}">
+        <el-menu :default-active="defaultActive" unique-opened class="el-menu-vertical-demo" :collapse="isCollapse" style="height:100%" @select='handleSelect' @open="handleOpen" @close="handleClose">
           <dh-submenu :list='authority' index='0'></dh-submenu>
         </el-menu>
       </el-aside>
@@ -21,19 +21,17 @@
           </el-tab-pane>
             <div style="height:calc(100vh - 102px);overflow:auto;padding:15px;box-sizing:border-box">
               <slot name='body'>
-                <keep-alive v-if="!com">
-                  <router-view/>
+                <keep-alive :include="keepList">
+                  <component :is='com' :query='query' @add-tabs="handleSelect"></component>
                 </keep-alive>
-                <component v-else :is='com' @add-tabs="handleSelect"></component>
               </slot>
             </div>
         </el-tabs>
-        <div v-show="!tabsShow" style="height:calc(100vh - 102px);overflow:auto;padding:15px;box-sizing:border-box">
+        <div v-if="!tabsShow" style="height:calc(100vh - 102px);overflow:auto;padding:15px;box-sizing:border-box">
           <slot name='body'>
-            <keep-alive v-if="!com">
-              <router-view/>
+            <keep-alive :include="keepList">
+              <component :is='com' :query='query' @add-tabs="handleSelect"></component>
             </keep-alive>
-            <component v-else :is='com' @add-tabs="handleSelect"></component>
           </slot>
         </div>
       </el-main>
@@ -58,26 +56,41 @@
         type:Array,
         default:[]
       },
-      tabsType:{
+      tabsType:{//tabs类型
         type:String,
         default:'border-card'
       },
-      tabsShow:{
+      tabsShow:{//是否展示tabs切换
         type:Boolean,
         default:true
-      }
+      },
+      isCollapse:{//侧边栏菜单折叠
+        type:Boolean,
+        default:false
+      },
     },
     data(){
       return{
         defaultActive:'1',
         editableTabsValue:'/main',
-        editableTabs:[{name:'/main',title:'用户桌面'}],
-        com:''
+        editableTabs:[{name:'/main',title:'用户桌面',key_name:'main'}],
+        keepList:[],
+        com:'',
+        query:'',
       }
     },
     created(){
       if(this.$router.path !== '/main'){
         this.$router.replace('/main')
+      }
+    },
+    watch:{
+      editableTabs(val){
+        console.log('动态监听',val)
+        this.keepList=val.map(item=>{
+          return item.key_name
+        })
+        console.log('this.keepList',this.keepList)
       }
     },
     methods: {
@@ -89,7 +102,7 @@
         console.log(key, keyPath);
         this.$emit('close',{key,keyPath})
       },
-      handleSelect(key, keyPath) {
+      handleSelect(key, keyPath, query) {
         this.editableTabsValue=key
         this.defaultActive=key
         let index=this.editableTabs.findIndex(item=>{
@@ -100,11 +113,13 @@
             return item.path === key
           })
           if(item){
-            this.editableTabs.push({title:item.name,name:item.path})
+            this.editableTabs.push({title:item.name,name:item.path,key_name:item.path.substring(1)})
           }else{
-            this.editableTabs.push({title:keyPath.name,name:keyPath.path})
+            this.editableTabs.push({title:keyPath.name,name:keyPath.path,key_name:keyPath.path.substring(1)})
           }
         }
+        console.log('this.keepList',this.keepList)
+        this.query=query
         this.com=this.FindComponent(key)
         console.log('路由查组件',key,this.$router.options.routes)
         if(!this.com) this.$emit('select',{key,keyPath})
@@ -123,7 +138,9 @@
           });
         }
         console.log(tabs)
-        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+        this.editableTabs = tabs.filter(tab => {
+          return tab.name !== targetName
+        });
         if(this.editableTabsValue !== a){
           this.defaultActive=a
           this.editableTabsValue=a
@@ -160,4 +177,7 @@
  .el-tabs--border-card > .el-tabs__content{
    padding:0
  }
+ .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 210px;
+  }
 </style>
