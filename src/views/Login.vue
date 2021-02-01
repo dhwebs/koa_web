@@ -9,17 +9,17 @@
         <img src="../assets/image/u986.png" alt="logo"/>
       </div>
       <el-form :model="form" status-icon :rules="rules" ref="form" label label-width="100px" class="demo-ruleForm">
-        <p class="title">账号登录</p>
+        <p class="title" v-copy>账号登录</p>
         <ul class="account">
           <li class="form-item">
             <i class="fa fa-user" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
             <span class="user-icon"></span>
-            <input placeholder="用户帐号" v-model="form.username" @keydown.enter="changeTab" />
+            <input placeholder="用户帐号" v-model="form.username" v-copy @keydown.enter="changeTab" />
           </li>
           <li class="form-item">
             <i class="fa fa-lock" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
             <span class="user-icon"></span>
-            <input id="password" type="password" placeholder="登录密码" v-model="form.password" auto-complete="off" @keydown.enter="onLogin" />
+            <input id="password" type="password" placeholder="登录密码" v-copy v-model="form.password" auto-complete="off" @keydown.enter="onLogin" />
           </li>
           <li class="remember">
               <el-checkbox v-model="rememberPassword" >记住密码</el-checkbox>

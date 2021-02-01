@@ -34,56 +34,34 @@
         <el-input v-model="params.title"></el-input>
       </el-form-item>
       <el-form-item label=" " label-width="200px">
-        <el-button type="info" icon="el-icon-search" size="small" @click="handleCurrentChange(1)">查询</el-button>
+        <el-button type="info" icon="el-icon-search" size="small" @click="getArtical">查询</el-button>
         <el-button size="small" plain @click="reset">清空</el-button>
       </el-form-item>
     </el-form>
-    
-    <el-table :data="tableData" border :cell-style='rowStyle' style="margin-top:20px;box-shadow:0 0 2px 0 #333;width: 100%;" v-loading="loading">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="subtitle" label="副标题"></el-table-column>
-      <el-table-column prop="content" label="内容" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="author" label="作者"></el-table-column>
-      <el-table-column prop="cover" label="封面"></el-table-column>
-      <el-table-column prop="state" label="状态"></el-table-column>
-      <el-table-column prop="createdAt" label="发表日期"></el-table-column>
-      <el-table-column prop="updatedAt" label="修改日期"></el-table-column>
-      <el-table-column label="操作" width="180px" align="center">
-        <template slot-scope="row">
-          <el-button type="primary" size="small" @click="updateClick(row.row)">修改</el-button>
-          <el-button size="small" type='danger' @click="reset(row.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="pager">
-       <el-pagination
-        align='right'
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="params.cursor"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size="params.limit"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
-    </div>
+    <dh-table
+      :aurl="aurl"
+      :fileds="fileds"
+      :search="params"
+      :cellStyle="rowStyle"
+      @btn-click="btnClick"
+      ref='dhTable'
+    />
   </div>
 </template>
 
 <script>
+import dhTable from '../components/dh-table/index'
 export default {
-  name:'article',
+  name:'articles',
+  components:{
+    dhTable
+  },
   data(){
     return{
       loading:false,
       params:{
-        cursor:1,
-        limit:10,
         title:''
       },
-      total:0,
-      tableData:[],
       dialogArticle:false,
       title:'添加文章',
       subData:{
@@ -93,33 +71,34 @@ export default {
         cover:'',
         author:'',
         authorId:'',
-      }
+      },
+      aurl:{
+        url:'/api/article',
+        height:'450px',
+        select:true,
+        button:[
+          {key_name:'修改',type:'primary'},
+          {key_name:'删除',type:'danger'}
+        ]
+      },
+      fileds:[
+        {label:'标题',prop:'title'},
+        {label:'副标题',prop:'subtitle'},
+        {label:'内容',prop:'content'},
+        {label:'作者',prop:'author'},
+        {label:'封面',prop:'cover',type:'img'},
+        {label:'状态',prop:'state'},
+        {label:'发表日期',prop:'createdAt'},
+        {label:'修改日期',prop:'updatedAt'},
+      ],
     }
   },
   created(){
-    this.getArtical()
+    // this.getArtical()
   },
   methods:{
     getArtical() {
-      this.$axios({
-        method:'get',
-        url:'/api/article',
-        params:this.params
-      }).then(res=>{
-        console.log(res)
-        this.tableData=res.data.rows
-        this.total=res.data.total
-      }).catch(err=>{
-        console.log(err)
-      })
-    },
-    handleSizeChange(val) {
-      this.params.limit=val
-      this.getArtical()
-    },
-    handleCurrentChange(val) {
-      this.params.cursor=val
-      this.getArtical()
+      this.$refs.dhTable.reload()
     },
     rowStyle({row}){
       if(row.state==1){
@@ -176,6 +155,13 @@ export default {
         console.log(err)
       })
     },
+    btnClick(row,item,i){
+      if(item.key_name=='修改'){
+        this.updateClick(row)
+      }else if(item.key_name=='删除'){
+        this.reset(row)
+      }
+    }
   }
 }
 </script>

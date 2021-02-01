@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="top">
-      <h3>报价详情</h3>
+      <h3>报价审批</h3>
     </div>
     <el-collapse v-model="activeNames" @change="handleChange" style="margin-top:40px">
       <el-collapse-item title="信息" name="0">
@@ -83,31 +83,20 @@
         </el-form>
       </el-collapse-item>
       <el-collapse-item title="报价方案" name="4">
-        <el-table :data="tableData" border @selection-change="selChange" style="margin-top:20px;box-shadow:0 0 2px 0 #333;width: 100%;" v-loading="loading">
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="date2" label="航空公司"></el-table-column>
-          <el-table-column prop="date1" label="航班号"></el-table-column>
-          <el-table-column prop="date3" label="航班日期"></el-table-column>
-          <el-table-column prop="date6" label="货物密度"></el-table-column>
-          <el-table-column prop="date7" label="100+指导"></el-table-column>
-          <el-table-column prop="date20" label="生效时间"></el-table-column>
-          <el-table-column prop="date21" label="失效时间"></el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="row">
-              <a href="javascript:void(0)" @click="deleteOne(row.row)">删除</a>
-            </template>
-          </el-table-column>
-        </el-table>
+        <dh-table
+          :aurl="aurl"
+          :fileds="fileds"
+          @btn-click="deleteOne"
+          @selection-change="selChange"
+          ref='dhTable1'
+        ></dh-table>
       </el-collapse-item>
       <el-collapse-item title="审批参考" name="5">
-        <el-table :data="tableData2" border @selection-change="selChange" style="margin-top:20px;box-shadow:0 0 2px 0 #333;width: 100%;" v-loading="loading">
-          <el-table-column prop="date1" label="航班号"></el-table-column>
-          <el-table-column prop="date2" label="航空公司"></el-table-column>
-          <el-table-column prop="date6" label="货物密度"></el-table-column>
-          <el-table-column prop="date7" label="100+参考单价"></el-table-column>
-          <el-table-column prop="date20" label="公司底价1"></el-table-column>
-          <el-table-column prop="date21" label="公司底价2"></el-table-column>
-        </el-table>
+        <dh-table
+          :aurl="aurl2"
+          :fileds="fileds"
+          ref='dhTable2'
+        ></dh-table>
         <el-row class="formView" style="margin-top:20px;padding:10px;box-sizing:border-box;color:#4683c5" v-for="(item,i) in moneyList" :key='i'>
           <el-col :span="6">提交日期：2020-07-14 16:23</el-col>
           <el-col :span="4">{{i==0?'部门经理':i==1?'航线经理':'总经理'}}</el-col>
@@ -123,8 +112,12 @@
   </div>
 </template>
 <script>
+import dhTable from '../components/dh-table/index'
   export default {
     name: 'price',
+    components:{
+      dhTable
+    },
     data(){
       return{
         loading:false,
@@ -138,7 +131,18 @@
         options7:['报关费','制单费','其他'],
         options8:['JOB'],
         options9:['人民币','美金','港币'],
-        tableData:[
+        
+        params:{
+
+        },
+        
+        aurl:{
+          height:'450px',
+          select:true,
+          button:[
+            {key_name:'删除',type:'danger'}
+          ],
+          list:[
           {
             date1:'MU02373',
             date3:'07/21 10:25',
@@ -149,29 +153,45 @@
             date21:'2020-07-20',
           }
         ],
-        tableData2:[
-          {
-            date1:'MU02373',
-            date2:'东航',
-            date6:'1:140以上',
-            date7:'20  7成泡',
-            date20:'15 7成泡',
-            date21:'12 7成泡',
-          }
-        ],
-        params:{
-
         },
+        fileds:[
+          {label:'航空公司',prop:'date1'},
+          {label:'航班号',prop:'date3'},
+          {label:'航班日期',prop:'date2'},
+          {label:'货物密度',prop:'date6'},
+          {label:'指导',prop:'date7'},
+          {label:'生效时间',prop:'date20'},
+          {label:'失效时间',prop:'date21'},
+        ],
+        aurl2:{
+          list:[
+            {
+              date1:'MU02373',
+              date2:'东航',
+              date6:'1:140以上',
+              date7:'20  7成泡',
+              date20:'15 7成泡',
+              date21:'12 7成泡',
+            }
+          ],
+        },
+        fileds2:[
+          {label:'航班号',prop:'date1'},
+          {label:'航空公司',prop:'date2'},
+          {label:'货物密度',prop:'date6'},
+          {label:'参考单价',prop:'date7'},
+          {label:'公司底价1',prop:'date20'},
+          {label:'公司底价2',prop:'date21'},
+        ],
         moneyList:[{params:{}},{params:{}},{params:{}},],
         activeNames:['0','1','2','3','4','5']
       }
     },
     created(){
       for(let i=1;i<2;i++){
-        this.tableData[i]=this.tableData[0]
-        this.tableData2[i]=this.tableData2[0]
+        this.aurl2.list[i]=this.aurl2.list[0]
+        this.aurl.list[i]=this.aurl.list[0]
       }
-      console.log(this.tableData)
     },
     methods:{
       reset(){

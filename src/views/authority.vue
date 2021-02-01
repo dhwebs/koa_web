@@ -46,7 +46,13 @@
         <el-button size="small" type="warning" icon="el-icon-download">导出</el-button>
       </el-button-group>
     </div>
-    <el-table :data="tableData" style="width: 100%;margin-top:20px" row-key="id" border default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+    <dh-table
+      :aurl="aurl"
+      :fileds="fileds"
+      @btn-click="btnClick"
+      ref='dhTable'
+    />
+    <!-- <el-table :data="tableData" style="width: 100%;margin-top:20px" row-key="id" border default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column align="center" prop="name" label="名称"></el-table-column>
       <el-table-column align="center" prop="alias" label="别名"></el-table-column>
       <el-table-column align="center" prop="path" label="路由"></el-table-column>
@@ -63,16 +69,17 @@
           <el-button size="small" type='danger' @click="deleted(row.row)">删除</el-button>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
   </div>
 </template>
 
 <script>
 import dhIcon from '../components/dh-icon/index'
+import dhTable from '../components/dh-table/index'
 export default {
   name:'authority',
   components:{
-    dhIcon
+    dhIcon,dhTable
   },
   data(){
     return{
@@ -89,13 +96,50 @@ export default {
         order:'',
       },
       belongId:'',
-      options:[{label:'',value:''},{label:'路由',value:'route'},{label:'菜单',value:'title'},{label:'其他',value:'其他'}]
+      options:[{label:'',value:''},{label:'路由',value:'route'},{label:'菜单',value:'title'},{label:'其他',value:'其他'}],
+      
+      aurl:{
+        url:'/api/authority',
+        treeProps:{children: 'children', hasChildren: 'hasChildren'},
+        button:[
+          {key_name:'添加',type:'primary',show:'[grade]==1'},
+          {key_name:'修改',type:'primary'},
+          {key_name:'删除',type:'danger'}
+        ],
+        noPagination:true,
+      },
+      fileds:[
+        {label:'名称',prop:'name'},
+        {label:'别名',prop:'alias'},
+        {label:'路由',prop:'path'},
+        {label:'图标',prop:'icon',type:'icon'},
+        {label:'权限级别',prop:'grade'},
+      ],
     }
   },
   created(){
-    this.getAuthority()
+    // this.getAuthority()
+    this.aurl.filterList=this.filterList
   },
   methods:{
+    filterList(res){
+      let list = res.data.rows.filter(item=>{
+        return !item.belongId
+      })
+      this.recursion2(list,res.data.rows)
+      console.log('this.tableData',list)
+      return list
+    },
+    btnClick(row,item,i){
+      console.log(row,item,i)
+      if(item.key_name=='添加'){
+        this.addClick(row)
+      }else if(item.key_name=='修改'){
+        this.updateClick(row)
+      }else if(item.key_name=='删除'){
+        this.deleted(row)
+      }
+    },
     getAuthority(){
       this.$axios({
         method:'get',

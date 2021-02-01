@@ -41,19 +41,19 @@
       <el-form label-width="100px" size="small" v-show="registerShow" style="padding:50px 25%">
         <p class="title">注册账号</p>
         <el-form-item label="公司名称" model='subData' ref='register'>
-          <el-input prop='company' v-model="subData.company" placeholder="公司名称" rules="[{ required: true, message: '请输入公司名称', trigger: 'change' }]"></el-input>
+          <el-input prop='company' v-model="subData.company" placeholder="公司名称" rules="{ required: true, message: '请输入公司名称', trigger: 'change' }"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
-          <el-input prop='name' v-model="subData.name" placeholder="姓名" rules="[{ required: true, message: '请输入姓名', trigger: 'change' }]"></el-input>
+          <el-input prop='name' v-model="subData.name" placeholder="姓名" rules="{ required: true, message: '请输入姓名', trigger: 'change' }"></el-input>
         </el-form-item>
         <el-form-item label="手机号码">
-          <el-input prop='phone' v-model="subData.phone" placeholder="手机号码" rules="[{ required: true, message: '请输入手机号码', trigger: 'change' }]"></el-input>
+          <el-input prop='phone' v-model="subData.phone" placeholder="手机号码" rules="{ required: true, message: '请输入手机号码', trigger: 'change' }"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input prop='password' v-model="subData.password" type="password" placeholder="密码" rules="[{ required: true, message: '请输入密码', trigger: 'change' }]"></el-input>
+          <el-input prop='password' v-model="subData.password" type="password" placeholder="密码" rules="{ required: true, message: '请输入密码', trigger: 'change' }"></el-input>
         </el-form-item>
         <el-form-item label="确认密码">
-          <el-input prop='password2' v-model="subData.password2" type="password" placeholder="确认密码" rules="[{ required: true, message: '请输入确认密码', trigger: 'change' }]"></el-input>
+          <el-input prop='password2' v-model="subData.password2" type="password" placeholder="确认密码" rules="{ required: true, message: '请输入确认密码', trigger: 'change' }"></el-input>
         </el-form-item>
         <el-button type="primary" @click="onRegister" class="entry" style="width:150px;margin:0 auto" :disabled='disabled'>注册</el-button>
         <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer;margin-top:20px" @click="registerShow=false">已有账号？ 点击登录</p>

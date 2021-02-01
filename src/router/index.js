@@ -2,7 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home2.vue'
 import HomePage from '../views/homePages/index.vue'
-
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+const originalReplace = VueRouter.prototype.replace
+VueRouter.prototype.replace = function replace(location) {
+  return originalReplace.call(this, location).catch(err => err)
+}
 Vue.use(VueRouter)
 
 const routes = [
@@ -65,9 +72,9 @@ const routes = [
         component: () => import('../views/approval.vue')
       },
       {
-        path: '/article',
-        name: 'article',
-        component: () => import('../views/article.vue')
+        path: '/articles',
+        name: 'articles',
+        component: () => import('../views/articles.vue')
       },
       {
         path: '/pageStyle',
