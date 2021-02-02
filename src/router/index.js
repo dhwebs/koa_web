@@ -95,6 +95,11 @@ const routes = [
         path: '/setForm',
         name: 'setForm',
         component: () => import('../views/setForm.vue')
+      },
+      {
+        path: '/setTable',
+        name: 'setTable',
+        component: () => import('../views/setTable.vue')
       }
     ]
   },

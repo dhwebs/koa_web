@@ -40,7 +40,6 @@
     </el-form>
     <dh-table
       :aurl="aurl"
-      :fileds="fileds"
       :search="params"
       :cellStyle="rowStyle"
       @btn-click="btnClick"
@@ -79,18 +78,18 @@ export default {
         button:[
           {key_name:'修改',type:'primary'},
           {key_name:'删除',type:'danger'}
-        ]
+        ],
+        fileds:[
+          {label:'标题',prop:'title'},
+          {label:'副标题',prop:'subtitle'},
+          {label:'内容',prop:'content'},
+          {label:'作者',prop:'author'},
+          {label:'封面',prop:'cover',type:'img'},
+          {label:'状态',prop:'state'},
+          {label:'发表日期',prop:'createdAt'},
+          {label:'修改日期',prop:'updatedAt'},
+        ],
       },
-      fileds:[
-        {label:'标题',prop:'title'},
-        {label:'副标题',prop:'subtitle'},
-        {label:'内容',prop:'content'},
-        {label:'作者',prop:'author'},
-        {label:'封面',prop:'cover',type:'img'},
-        {label:'状态',prop:'state'},
-        {label:'发表日期',prop:'createdAt'},
-        {label:'修改日期',prop:'updatedAt'},
-      ],
     }
   },
   created(){

@@ -85,7 +85,6 @@
       <el-collapse-item title="报价方案" name="4">
         <dh-table
           :aurl="aurl"
-          :fileds="fileds"
           @btn-click="deleteOne"
           @selection-change="selChange"
           ref='dhTable1'
@@ -94,7 +93,6 @@
       <el-collapse-item title="审批参考" name="5">
         <dh-table
           :aurl="aurl2"
-          :fileds="fileds"
           ref='dhTable2'
         ></dh-table>
         <el-row class="formView" style="margin-top:20px;padding:10px;box-sizing:border-box;color:#4683c5" v-for="(item,i) in moneyList" :key='i'>
@@ -143,26 +141,26 @@ import dhTable from '../components/dh-table/index'
             {key_name:'删除',type:'danger'}
           ],
           list:[
-          {
-            date1:'MU02373',
-            date3:'07/21 10:25',
-            date2:'东航',
-            date6:'1:140以上',
-            date7:'20  7成泡',
-            date20:'2020-07-13',
-            date21:'2020-07-20',
-          }
-        ],
+            {
+              date1:'MU02373',
+              date3:'07/21 10:25',
+              date2:'东航',
+              date6:'1:140以上',
+              date7:'20  7成泡',
+              date20:'2020-07-13',
+              date21:'2020-07-20',
+            }
+          ],
+          fileds:[
+            {label:'航空公司',prop:'date1'},
+            {label:'航班号',prop:'date3'},
+            {label:'航班日期',prop:'date2'},
+            {label:'货物密度',prop:'date6'},
+            {label:'指导',prop:'date7'},
+            {label:'生效时间',prop:'date20'},
+            {label:'失效时间',prop:'date21'},
+          ],
         },
-        fileds:[
-          {label:'航空公司',prop:'date1'},
-          {label:'航班号',prop:'date3'},
-          {label:'航班日期',prop:'date2'},
-          {label:'货物密度',prop:'date6'},
-          {label:'指导',prop:'date7'},
-          {label:'生效时间',prop:'date20'},
-          {label:'失效时间',prop:'date21'},
-        ],
         aurl2:{
           list:[
             {
@@ -174,15 +172,15 @@ import dhTable from '../components/dh-table/index'
               date21:'12 7成泡',
             }
           ],
+          fileds:[
+            {label:'航班号',prop:'date1'},
+            {label:'航空公司',prop:'date2'},
+            {label:'货物密度',prop:'date6'},
+            {label:'参考单价',prop:'date7'},
+            {label:'公司底价1',prop:'date20'},
+            {label:'公司底价2',prop:'date21'},
+          ],
         },
-        fileds2:[
-          {label:'航班号',prop:'date1'},
-          {label:'航空公司',prop:'date2'},
-          {label:'货物密度',prop:'date6'},
-          {label:'参考单价',prop:'date7'},
-          {label:'公司底价1',prop:'date20'},
-          {label:'公司底价2',prop:'date21'},
-        ],
         moneyList:[{params:{}},{params:{}},{params:{}},],
         activeNames:['0','1','2','3','4','5']
       }

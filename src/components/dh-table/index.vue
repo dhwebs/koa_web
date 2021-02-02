@@ -13,17 +13,18 @@
        row-key="id"
        style="margin-top:20px;box-shadow:0 0 2px 0 #333;width: 100%;">
       <el-table-column type="selection" width="55" v-if="aurl.select" align="center"></el-table-column>
-      <el-table-column v-for="(item,i) in fileds" :key="i" :label="item.label" :width="item.width" :fixed="item.fixed" show-overflow-tooltip align="center">
+      <el-table-column v-for="(item,i) in aurl.fileds" :key="i" :label="item.label" :width="item.width" :fixed="item.fixed" show-overflow-tooltip align="center">
         <template slot-scope="row">
           <el-image :src="row.row[item.prop] ? (row.row[item.prop].key_name || row.row[item.prop]) : ''" v-if="item.type=='img'"></el-image>
           <i v-else-if="item.type=='icon'" :class="row.row[item.prop] ? (row.row[item.prop].key_name || row.row[item.prop]) : ''" style="font-size:20px"></i>
           <el-input v-else-if="item.type=='input'" v-model="row.row[item.prop]" size="mini" style="width:90%"></el-input>
+          <el-switch v-else-if="item.type=='switch'" v-model="row.row[item.prop]"></el-switch>
           <span v-else>{{row.row[item.prop] ? (row.row[item.prop].key_name || row.row[item.prop]) : ''}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="100px" v-if="aurl.button && aurl.button.length" align="center" fixed="right">
         <template slot-scope="row">
-          <el-button v-for="(item,i) in aurl.button" @click="btnClick(row.row,item,i)" :key="i" plain size="small" :type="item.type" :icon="item.icon">{{item.key_name}}</el-button>
+          <el-button v-for="(item,i) in aurl.button" @click="btnClick(row.row,item,row.$index)" :key="i" plain size="small" :type="item.type" :icon="item.icon">{{item.key_name}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,29 +50,15 @@ export default {
       type:Object,
       default:{
         url:'',//查询路径
-        list:[],
+        list:[],//静态数组
+        fileds:[],//数组项
         height:'300px',//表格高度
         select:true,//是否勾选
-        tree_props:false,//多级表格
+        treeProps:false,//多级表格
         button:[],//操作按钮
         noPagination:false,//无需分页
         filterList:()=>{},//数组过滤方法
       }
-    },
-    fileds:{
-      tyep:Array,
-      default:()=>{return []}  
-      /* 示例
-        [
-          {
-            prop:'key_name',
-            label:'名称',
-            width:'200px',
-            fixed:true,
-            type:'img'
-          }
-        ]
-      */
     },
     search:{
       type:Object,
@@ -92,7 +79,21 @@ export default {
       },
     }
   },
+  watch:{
+    list(newValue, oldValue) {
+      console.log(newValue,this.aurl)
+      this.aurl.list=newValue
+      this.haveList()
+    },
+  },
+  computed: {
+    list() {
+      console.log('这个是list',this.aurl.list)
+      return this.aurl.list
+    }
+  },
   created(){
+    console.log(this.aurl.list)
     this.getTableData()
   },
   mounted(){

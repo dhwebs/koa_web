@@ -48,7 +48,6 @@
     </div>
     <dh-table
       :aurl="aurl"
-      :fileds="fileds"
       @btn-click="btnClick"
       ref='dhTable'
     />
@@ -107,14 +106,14 @@ export default {
           {key_name:'删除',type:'danger'}
         ],
         noPagination:true,
+        fileds:[
+          {label:'名称',prop:'name'},
+          {label:'别名',prop:'alias'},
+          {label:'路由',prop:'path'},
+          {label:'图标',prop:'icon',type:'icon'},
+          {label:'权限级别',prop:'grade'},
+        ],
       },
-      fileds:[
-        {label:'名称',prop:'name'},
-        {label:'别名',prop:'alias'},
-        {label:'路由',prop:'path'},
-        {label:'图标',prop:'icon',type:'icon'},
-        {label:'权限级别',prop:'grade'},
-      ],
     }
   },
   created(){
