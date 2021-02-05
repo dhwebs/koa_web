@@ -6,7 +6,7 @@ import dhTable from "./dh-table/index.vue";
 import utils from "../utils/index.js";
 
 const components = [
-  dhIcon, dhSubmenu, dhMain, dhLogin, dhTable, utils
+  dhIcon, dhSubmenu, dhMain, dhLogin, dhTable
 ]
 
 const install = function (Vue) {
@@ -23,5 +23,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
+  version: '0.1.20',
   install, dhIcon, dhSubmenu, dhMain, dhLogin, dhTable, utils
 }

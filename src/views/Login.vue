@@ -1,14 +1,11 @@
 <template>
-  <div class="login" type="border-card" v-loading="loading">
-    <!-- company-img -->
-    <!-- <div class="left-side" :style="'background-image:url('+ require('../assets/image/login-banner.png') +')'" v-show="!registerShow"></div> -->
+  <!-- <div class="login" type="border-card" v-loading="loading">
     <div class="left-side" style="background-image:url('https://w.wallhaven.cc/full/8o/wallhaven-8o7q82.jpg');background-size:100% 100%" v-show="!registerShow"></div>
     <div class="right-side" v-show="!registerShow">
       <div class="logo-img">
-        <!-- logo -->
         <img src="../assets/image/u986.png" alt="logo"/>
       </div>
-      <el-form :model="form" status-icon :rules="rules" ref="form" label label-width="100px" class="demo-ruleForm">
+      <el-form :model="form" status-icon ref="form" label label-width="100px" class="demo-ruleForm">
         <p class="title" v-copy>账号登录</p>
         <ul class="account">
           <li class="form-item">
@@ -26,7 +23,6 @@
           </li>
           <li>
             <el-button type="primary" @click="onLogin" class="entry" :disabled='disabled'>登录</el-button>
-            <!-- <el-button type="primary" @click="login" class="entry">注册</el-button> -->
           </li>
         </ul>
         <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer" @click="registerShow=true">没有账号？ 点击注册</p>
@@ -39,7 +35,7 @@
       <el-form label-width="100px" size="small" v-show="registerShow" style="padding:50px 25%">
         <p class="title">注册账号</p>
         <el-form-item label="公司名称">
-          <el-input v-model="subData.company" placeholder="公司名称"></el-input>
+          <el-input v-model="subData.company" placeholder="公司名称" rules="{ required: true, message: '请输入姓名', trigger: 'change' }"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="subData.name" placeholder="姓名"></el-input>
@@ -56,12 +52,17 @@
         <el-button type="primary" @click="onRegister" class="entry" style="width:150px;margin:0 auto" :disabled='disabled'>注册</el-button>
         <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer;margin-top:20px" @click="registerShow=false">已有账号？ 点击登录</p>
       </el-form>
-  </div>  
+  </div> -->
+  <dh-login></dh-login>
 </template>
 
 <script>
+import dhLogin from '../components/dh-login/index'
   export default {
     name: "Login",
+    components:{
+      dhLogin
+    },
     data() {
       return {
         disabled:false,
@@ -71,7 +72,6 @@
         cookiepwd: '',
         loading: false,
         form: {},
-        rules:[],
         registerShow:false,
         subData:{
           company:'',

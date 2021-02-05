@@ -10,27 +10,20 @@
         <!-- logo -->
         <el-image style="width:100%;height:100%" :src="subImg?subImg:'https://w.wallhaven.cc/full/8o/wallhaven-8o7q82.jpg'"></el-image>
       </div>
-      <el-form :model="form" status-icon :rules="rules" ref="form" label label-width="100px" class="demo-ruleForm">
+      <el-form :model="form" size="mini" ref="form" label-width="100px" class="demo-ruleForm">
         <p class="title">账号登录</p>
-        <ul class="account">
-          <li class="form-item">
-            <i class="fa fa-user" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
-            <span class="user-icon"></span>
-            <input placeholder="用户帐号" v-model="form.username"/>
-          </li>
-          <li class="form-item">
-            <i class="fa fa-lock" style="color:#0f88cd;font-size:20px;width:20px;padding:5px"></i>
-            <span class="user-icon"></span>
-            <input id="password" type="password" placeholder="登录密码" v-model="form.password" auto-complete="off" @keydown.enter="onLogin" />
-          </li>
-          <li class="remember">
-              <el-checkbox v-model="rememberPassword" >记住密码</el-checkbox>
-          </li>
-          <li>
-            <el-button type="primary" @click="onLogin" class="entry" :disabled='disabled'>登录</el-button>
-            <!-- <el-button type="primary" @click="login" class="entry">注册</el-button> -->
-          </li>
-        </ul>
+        <el-form-item label="用户帐号" prop='username' :rules="{required: true, message: '用户帐号不能为空', trigger: 'blur'}">
+          <el-input v-model="form.username" placeholder="用户帐号" prefix-icon="el-icon-user" style="width:80%"></el-input>
+        </el-form-item>
+        <el-form-item label="登录密码" prop='password' :rules="{ required: true, message: '请输入登录密码', trigger: 'blur' }">
+          <el-input v-model="form.password" @keydown.enter.native="onLogin" placeholder="登录密码" prefix-icon="el-icon-lock" style="width:80%"></el-input>
+        </el-form-item>
+        <el-form-item label=" ">
+          <el-checkbox v-model="rememberPassword" >记住密码</el-checkbox>
+        </el-form-item>
+        <el-form-item label="" label-width="0" style="width:60%;margin:10px auto">
+          <el-button type="primary" @click="onLogin" class="entry" :disabled='disabled'>登录</el-button>
+        </el-form-item>
         <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer" @click="registerShow=true">没有账号？ 点击注册</p>
       </el-form>
       <div class="copyright">
@@ -38,26 +31,26 @@
       </div>
     </div>
     
-      <el-form label-width="100px" size="small" v-show="registerShow" style="padding:50px 25%">
-        <p class="title">注册账号</p>
-        <el-form-item label="公司名称" model='subData' ref='register'>
-          <el-input prop='company' v-model="subData.company" placeholder="公司名称" rules="{ required: true, message: '请输入公司名称', trigger: 'change' }"></el-input>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input prop='name' v-model="subData.name" placeholder="姓名" rules="{ required: true, message: '请输入姓名', trigger: 'change' }"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号码">
-          <el-input prop='phone' v-model="subData.phone" placeholder="手机号码" rules="{ required: true, message: '请输入手机号码', trigger: 'change' }"></el-input>
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input prop='password' v-model="subData.password" type="password" placeholder="密码" rules="{ required: true, message: '请输入密码', trigger: 'change' }"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码">
-          <el-input prop='password2' v-model="subData.password2" type="password" placeholder="确认密码" rules="{ required: true, message: '请输入确认密码', trigger: 'change' }"></el-input>
-        </el-form-item>
-        <el-button type="primary" @click="onRegister" class="entry" style="width:150px;margin:0 auto" :disabled='disabled'>注册</el-button>
-        <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer;margin-top:20px" @click="registerShow=false">已有账号？ 点击登录</p>
-      </el-form>
+    <el-form label-width="100px" :model='subData' ref='register' size="small" v-show="registerShow" style="padding:50px 25%">
+      <p class="title">注册账号</p>
+      <el-form-item label="公司名称" prop='company' :rules="{required: true, message: '公司名称不能为空', trigger: 'blur'}">
+        <el-input v-model="subData.company" placeholder="公司名称"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" prop='name' :rules="{ required: true, message: '请输入姓名', trigger: 'blur' }">
+        <el-input v-model="subData.name" placeholder="姓名"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号码" prop='phone' :rules="{ required: true, message: '请输入手机号码', trigger: 'blur' }">
+        <el-input v-model="subData.phone" placeholder="手机号码"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop='password' :rules="{ required: true, message: '请输入密码', trigger: 'blur' }">
+        <el-input v-model="subData.password" type="password" placeholder="密码"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop='password2' :rules="{ required: true, message: '请输入确认密码', trigger: 'blur' }">
+        <el-input v-model="subData.password2" type="password" placeholder="确认密码"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="onRegister" class="entry" style="width:150px;margin:0 auto" :disabled='disabled'>注册</el-button>
+      <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer;margin-top:20px" @click="registerShow=false">已有账号？ 点击登录</p>
+    </el-form>
   </div>  
 </template>
 
@@ -73,7 +66,6 @@
         cookiepwd: '',
         loading: false,
         form: {},
-        rules:[],
         registerShow:false,
         subData:{
           company:'',
@@ -86,32 +78,21 @@
       };
     },
     methods: {
-      submitForm(formName) {
-        return this.$refs[formName].validate((valid) => {
-          if (valid) {
-            return true
-          } else {
-            return false;
-          }
-        });
-      },
       onLogin() {
-        if(!this.form.username){
-          this.$message.warning('账号不能为空')
-          return
+        console.log(this.$utils)
+        if(this.$utils.validate(['form'],this)){
+          this.disabled=true
+          setTimeout(()=>{
+            this.disabled=false
+          },2000)
+          this.$emit('login',this.form)
         }
-        if(!this.form.password){
-          this.$message.warning('密码不能为空')
-          return
-        }
-        this.disabled=true
-        setTimeout(()=>{
-          this.disabled=false
-        },2000)
-        this.$emit('login',this.form)
       },
       onRegister() {
-        if(!this.submitForm()){
+        console.log(this.$utils.validate(['register'],this))
+        if(!this.$utils.validate(['register'],this)){
+          console.log('进来了')
+          this.$utils.resetFields(['register'],this)
           return
         }
         if(this.subData.password !== this.subData.password2){
