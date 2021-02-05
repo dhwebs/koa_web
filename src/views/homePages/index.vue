@@ -5,7 +5,7 @@
         <img :src="(website.logo && website.logo.length) ? website.logo[0].url :''" alt="logo">
         <div class="right">
           <p @click="jump('home')">首页</p>
-          <p v-for="section in sectionList" @click="jump(section.name)">{{section.name}}</p>
+          <p v-for="section in sectionList" @click="jump(section.name)" :key="section.name">{{section.name}}</p>
           <p @click="jump('contact')">联系我们</p>
           <p @click="login">登录</p>
         </div>

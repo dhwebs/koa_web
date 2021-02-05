@@ -10,9 +10,12 @@
       highlight-current-row
       v-loading='loading'
       :cell-style="cellStyle"
+      :summary-method="summaryMethod"
+      :show-summary="summaryMethod.length>0"
        row-key="id"
        style="margin-top:20px;box-shadow:0 0 2px 0 #333;width: 100%;">
       <el-table-column type="selection" width="55" v-if="aurl.select" align="center"></el-table-column>
+      <slot name="expand"></slot>
       <el-table-column v-for="(item,i) in aurl.fileds" :key="i" :label="item.label" :width="item.width" :fixed="item.fixed" show-overflow-tooltip align="center">
         <template slot-scope="row">
           <el-image :src="row.row[item.prop] ? (row.row[item.prop].key_name || row.row[item.prop]) : ''" v-if="item.type=='img'"></el-image>
@@ -66,6 +69,10 @@ export default {
     },
     cellStyle:{
       type:Function,
+    },
+    summaryMethod:{
+      type:[Function,Boolean],
+      default:()=>{return false}
     }
   },
   data(){
@@ -155,7 +162,7 @@ export default {
     onRowClick(row){
       this.$emit('row-click',row)
     },
-    btnClick(row,item,i){//操作按钮，row:当前行数据，item:当前点击按钮 ， i:当前点击按钮下标
+    btnClick(row,item,i){//操作按钮，row:当前行数据，item:当前点击按钮 ， i:当前行下标
       this.$emit('btn-click',row,item,i)
     },
     reload(){

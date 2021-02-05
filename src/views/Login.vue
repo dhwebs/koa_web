@@ -53,7 +53,7 @@
         <p style="color:#0f88cd;text-align:center;font-size:11px;cursor:pointer;margin-top:20px" @click="registerShow=false">已有账号？ 点击登录</p>
       </el-form>
   </div> -->
-  <dh-login></dh-login>
+  <dh-login @login="onLogin"></dh-login>
 </template>
 
 <script>
@@ -96,17 +96,13 @@ import dhLogin from '../components/dh-login/index'
       hide() {
         this.visiable = false;
       },
-      onLogin() {
-        this.disabled=true
-        setTimeout(()=>{
-          this.disabled=false
-        },2000)
+      onLogin(data) {
         this.$axios({
           method:'post',
           url:'/api/login',
           data:{
-            name:this.form.username,
-            password:this.form.password
+            name:data.username,
+            password:data.password
           }
         }).then(res=>{
           console.log(res)

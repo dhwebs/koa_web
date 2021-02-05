@@ -6,7 +6,7 @@
           <el-col :span="4">
             <h1 style="color:#fff;text-align:center;width:160px;line-height:60px;padding:0">大海的后台</h1>
           </el-col>
-          <el-col :span="5" :offset="15">
+          <el-col :span="6" :offset="14">
             <el-menu style="color:#fff" class="el-menu-demo" mode="horizontal" background-color='#409EFF' text-color='#fff' @select='handleChange'>
               <el-submenu index="1">
                 <template slot="title"><i class="el-icon-menu" style="color:#fff;font-size:16px"></i>更换主题</template>
@@ -37,9 +37,9 @@
     },
     data(){
       return{
-        defaultActive:'1',
-        editableTabsValue:'/main',
-        editableTabs:[{name:'/main',title:'用户桌面'}],
+        // defaultActive:'1',
+        // editableTabsValue:'/main',
+        // editableTabs:[{name:'/main',title:'用户桌面'}],
       }
     },
     created(){

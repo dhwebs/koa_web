@@ -16,7 +16,7 @@
           <el-input v-model="form.username" placeholder="用户帐号" prefix-icon="el-icon-user" style="width:80%"></el-input>
         </el-form-item>
         <el-form-item label="登录密码" prop='password' :rules="{ required: true, message: '请输入登录密码', trigger: 'blur' }">
-          <el-input v-model="form.password" @keydown.enter.native="onLogin" placeholder="登录密码" prefix-icon="el-icon-lock" style="width:80%"></el-input>
+          <el-input v-model="form.password" type="password" @keydown.enter.native="onLogin" placeholder="登录密码" prefix-icon="el-icon-lock" style="width:80%"></el-input>
         </el-form-item>
         <el-form-item label=" ">
           <el-checkbox v-model="rememberPassword" >记住密码</el-checkbox>

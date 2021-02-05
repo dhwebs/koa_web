@@ -82,6 +82,7 @@
     created(){
       if(this.$router.path !== '/main'){
         this.$router.replace('/main')
+        this.com=this.FindComponent('/main')
       }
     },
     watch:{

@@ -44,7 +44,8 @@
       :cellStyle="rowStyle"
       @btn-click="btnClick"
       ref='dhTable'
-    />
+    >
+    </dh-table>
   </div>
 </template>
 

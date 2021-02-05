@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-carousel :interval="3000" trigger="click" arrow="never" height="400px" id="home">
-      <el-carousel-item v-for="banner in bannerList" >
+      <el-carousel-item v-for="(banner,k) in bannerList" :key="k">
         <div class="swbox">
           <el-image class="img" :src="banner.img" :alt="banner.name" fit="fill"></el-image>
           <div class="titleBackground"></div>
@@ -14,19 +14,19 @@
       </el-carousel-item>
     </el-carousel>
     <template v-for="(section,k) in sectionList">
-      <div v-if="section.url" style="width:1170px;margin:0 auto" :id="section.name">
+      <div :key="k" v-if="section.url" style="width:1170px;margin:0 auto" :id="section.name">
          <component v-bind:is="section.comp"></component> 
       </div>
       <div v-else :key='k' :style="{background: k%2==0?'#fcfcfc':'#fff'}" class="order" style="margin-top:0" :id="section.name">
         <div style="width:1170px;margin:0 auto">
           <div class="o-box1">{{section.name}}</div>
           <el-row :gutter="20">
-            <el-col v-for="(item,i) in section.children" :key='i' :span=item.span>
+            <el-col v-for="(item,i) in section.children" :key='i' :span="item.span">
               <div class="o-box2" @click="show(item)">
                 <!-- <el-button v-if="item.icon" type="primary" :icon="item.icon" circle></el-button> -->
                 <img :src="item.artImg?item.artImg:'https://w.wallhaven.cc/full/1k/wallhaven-1kjrdg.jpg'" alt="">
                 <!-- <p>{{item.name}} </p> -->
-                <p>{{item.artTitle}} </p>
+                <p>{{item.artTitle}}</p>
               </div>
             </el-col>
           </el-row>
